@@ -1,8 +1,21 @@
+import fontsFamily from '@/app/fonts';
+import { generateColorPalette } from '@/app/helpers/Colors';
 import { ApexOptions } from 'apexcharts';
-import ReactApexChart from 'react-apexcharts';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
+
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+  ssr: false, // Esto desactiva el renderizado en el servidor (SSR)
+});
+
 
 export const CurrentLeads = () => {
-  const series = [13, 40, 37, 20];
+  const [isClient, setIsClient] = useState(false);
+  const series = [13, 40, 37, 20, 60, 80, 15, 66, 78];
+
+  const baseColor = '#2191F8';
+
+  const palette = generateColorPalette(baseColor, series.length);
 
   const chartOptions: ApexOptions = {
     chart: {
@@ -19,28 +32,35 @@ export const CurrentLeads = () => {
               show: true,
               label: 'Leads Total',
               formatter: () => `${series.reduce((acc, val) => acc + val, 0)}`, // Muestra el total calculado
+              fontFamily: fontsFamily.lato,
+              color: '#000000',
+              fontSize: '14px',
+              fontWeight: 600,
             },
           },
         },
       },
     },
-    colors: ['#2196F3', '#64B5F6', '#0D47A1', '#BBDEFB'], // Colores de los segmentos
+    colors: palette, // Colores de los segmentos
     dataLabels: {
       enabled: false,
-    },
-    title: {
-      text: 'Current Leads',
-      align: 'left',
-      style: {
-        fontSize: '18px',
-        fontWeight: 'bold',
-        color: '#1565C0',
-      },
     },
     legend: {
       show: false,
     },
+    stroke: {
+      show: false
+    }
   };
+
+  useEffect(() => {
+    setIsClient(true); // Marcar que estamos en el cliente
+  }, []);
+
+  if (!isClient) {
+    // Si no estamos en el cliente, no renderizamos el gráfico
+    return null;
+  }
 
   return (
     <div>

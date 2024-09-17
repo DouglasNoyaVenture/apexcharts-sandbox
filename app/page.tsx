@@ -2,6 +2,7 @@
 
 import { ActiveMatters } from './Charts/ActiveMatters/ActiveMatters';
 import { CurrentLeads } from './Charts/CurrentLeads/CurrentLeads';
+import { MonthlyMetrics } from './Charts/MonthlyMetrics/MonthlyMetrics';
 import { NewLeads } from './Charts/NewLeads/NewLeads';
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <CurrentLeads />
       <NewLeads />
       <ActiveMatters />
+      <MonthlyMetrics />
     </main>
   );
 }
